@@ -1,8 +1,8 @@
-import subprocess  # För windows media player
-import speech_recognition as sr # Används för att förvanlda det muntliga till skriftlig text
-import requests  # Behövs för att skicka till ChatGPT/HTTP requests
-from gtts import gTTS  # Importerar google text to speech classen från gtts library
-import os  # Används för att spela upp svaret
+import subprocess  # To kill windows media player
+import speech_recognition as sr # Used to transform the spoken input to a string
+import requests  # To send HTTP requests
+from gtts import gTTS  # Googles text to speech library
+import os  # To play the mp3 file
 
 
 def audio_in():
@@ -23,7 +23,7 @@ Uses the speech_recognition library to record the users voice.
 Then uses the google tts library to recognize audio and assign value to variable recognized_text
     """
 
-    r = sr.Recognizer()  # r är nu en recognizer class och kan göra "speech recognition" på ljud
+    r = sr.Recognizer()
 
     with sr.Microphone() as source:
             print("Say something")
@@ -57,7 +57,8 @@ def chatgpt_answer(prompt):
 
     """
      # Nyckeln för tillgång till ChatGPT
-    api_key = "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"
+    api_key = "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"
+
         # The API endpoint for the GPT-2 model
     url = "https://api.openai.com/v1/engines/text-davinci-002/completions"
 
@@ -70,7 +71,7 @@ def chatgpt_answer(prompt):
     # The data for the API request
     data = {
         "prompt": prompt,
-        "max_tokens": 512 #En token ~4 engleska bokstäver
+        "max_tokens": 512
     }
 
         # Send the request to the API
@@ -104,9 +105,32 @@ def text_to_speech(generated_text):
     tts.save("generated_text.mp3")
     os.system("start generated_text.mp3")
 
+
+def is_wmp_running():
+        """
+    # Input:
+        No input or arguments (only run)
+
+
+    # Output:
+        Return 1: True - If wmplayer.exe is open
+        Return 2: False - If wmplayer.exe is not open
+
+    # Functionality:
+        Creates a
+      
+    """
+        tasklist = subprocess.check_output(['tasklist']).decode('utf-8')
+        if 'wmplayer.exe' in tasklist:
+            return True
+        else:
+            return False
+
     # Here is the main loop of the program which ends if you again == n.
 while True:
-    subprocess.call("taskkill /IM wmplayer.exe /F", shell=True)
+    if is_wmp_running():
+        subprocess.call("taskkill /IM wmplayer.exe /F", shell=True)
+
     recognized_text = audio_in()
     if recognized_text:
         generated_text = chatgpt_answer(recognized_text)
