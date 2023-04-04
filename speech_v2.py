@@ -1,8 +1,10 @@
-# Beskrivning:							Spelar in din röst och skickar in den till en OpenAI chatbot,
-#                                       spelar sedan upp svaret från chatbotten med google tts.
+# Description:                          Records your voice and sends it to an OpenAI chatbot, then plays back the chatbot's response using Google TTS.
+# Input:                                User's question to the chatbot.
+# Output:                               Chatbot's response MP3 file played back.
 #
-# By:									Rasmus Brandt
-# Date:									2023-04-04
+# By:                                   Rasmus Brandt
+# Date:                                 2023-04-04
+
 
 import subprocess  # To kill windows media player
 import speech_recognition as sr # Used to transform the spoken input to a string
